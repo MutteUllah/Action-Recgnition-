@@ -1,0 +1,12 @@
+ultralytics>=8.3.0        # YOLOv8/YOLO11 detector + built-in ByteTrack
+torch>=2.2.0
+torchvision>=0.17.0
+transformers>=4.42.0      # VideoMAE model + feature extractor
+accelerate>=0.30.0
+opencv-python>=4.9.0
+numpy>=1.26.0
+av>=12.0.0                # video decoding for training pipeline
+pandas>=2.2.0
+tqdm>=4.66.0
+scikit-learn>=1.4.0
+pyyaml>=6.0
