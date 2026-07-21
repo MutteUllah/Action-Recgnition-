@@ -1,6 +1,5 @@
 cctv_clip.mp4
 data/
 .venv/
-checkpoints/
-*.pt
+
 __pycache__/
