@@ -20,6 +20,7 @@ import time
 from collections import deque, defaultdict
 
 import cv2
+import imageio
 import streamlit as st
 
 import config
@@ -93,8 +94,11 @@ def process_video(video_path, detector, classifier, progress_bar, status_text):
     max_frames = max(1, min(total_frames_in_file, int(MAX_INPUT_SECONDS * fps)))
 
     out_path = tempfile.mktemp(suffix=".mp4")
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    writer = cv2.VideoWriter(out_path, fourcc, fps, (width, height))
+    # H.264 via imageio-ffmpeg -- cv2's mp4v codec isn't playable inline in most
+    # browsers, which is why the annotated output showed a blank/0:00 player.
+    writer = imageio.get_writer(
+        out_path, fps=fps, codec="libx264", quality=8, macro_block_size=1
+    )
 
     track_buffer = TrackBuffer(clip_len=config.CLIP_LEN, frame_size=config.FRAME_SIZE)
     stabilizer = AlertStabilizer()
@@ -149,13 +153,13 @@ def process_video(video_path, detector, classifier, progress_bar, status_text):
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2, cv2.LINE_AA,
             )
 
-        writer.write(frame)
+        writer.append_data(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         frame_idx += 1
         progress_bar.progress(frame_idx / max_frames)
         status_text.text(f"Processing frame {frame_idx}/{max_frames}")
 
     cap.release()
-    writer.release()
+    writer.close()
     elapsed = time.time() - start_time
 
     if alerts_seen:
