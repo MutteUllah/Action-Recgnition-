@@ -1,7 +1,7 @@
-gradio==4.44.0
-streamlit==1.38.0
-ultralytics==8.3.0
-transformers==4.44.2
-torch==2.4.1
-opencv-python-headless==4.10.0.84
+gradio
+streamlit
+ultralytics
+transformers
+torch
+opencv-python-headless
 numpy<2.0
