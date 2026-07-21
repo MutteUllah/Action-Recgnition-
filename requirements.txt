@@ -5,3 +5,5 @@ torch
 opencv-python-headless
 numpy<2
 lapx
+imageio
+imageio-ffmpeg
